@@ -6,7 +6,7 @@ Ofi is a website designed to assist users in tracking their finances. With funct
 
 You can see a video here on how Ofi works:
 
-[![YouTube video showing how Ofi works](https://ytcards.demolab.com/?id=bOLiBWD-Rgc&title=How+Ofi+Works&lang=en&timestamp=1751644800&background_color=%23F6B0D2&title_color=%23AF1665&stats_color=%2361515d&max_title_lines=1&width=500&border_radius=10&duration=232 "How Ofi Works")](https://www.youtube.com/watch?v=bOLiBWD-Rgc)
+[![YouTube video showing how Ofi works](https://ytcards.demolab.com/?id=bOLiBWD-Rgc&title=How+Ofi+Works&lang=en&timestamp=1751644800&background_color=%23F6B0D2&title_color=%23AF1665&stats_color=%23AFD5AA&max_title_lines=1&width=500&border_radius=10&duration=232 "How Ofi Works")](https://www.youtube.com/watch?v=bOLiBWD-Rgc)
 
 ### Built with
 
