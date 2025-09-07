@@ -62,6 +62,34 @@ if (!isset($_SESSION['user_id'])) {
   if ($firstname !== null) $_SESSION['firstname'] = $firstname;
   if ($surname !== null) $_SESSION['surname'] = $surname;
   if ($email !== null) $_SESSION['email'] = $email;
+
+}
+
+?>
+
+<?php
+
+$currentPeriod = $_GET['period'] ?? date('Y-m');
+
+$stmt = $pdo->prepare("
+  SELECT category, SUM(amount) as total
+  FROM income
+  JOIN budgets ON income.budget_id = budgets.id
+  WHERE income.user_id = :user_id
+    AND budgets.period = :period
+  GROUP BY category
+");
+$stmt->execute([
+  'user_id' => $user_id,
+  'period' => $currentPeriod
+]);
+$incomeData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$categories = [];
+$amounts = [];
+foreach ($incomeData as $row) {
+    $categories[] = $row['category'];
+    $amounts[] = $row['total'];
 }
 
 ?>
@@ -80,6 +108,8 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="/budget-tracker/assets/css/styles.css">
 
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   </head>
 
@@ -246,8 +276,53 @@ if (!isset($_SESSION['user_id'])) {
           <?php endforeach; ?>
         </tbody>
       </table>
+
+      <div class="in-chart">
+        <canvas id="incomeChart" style="max-width: 600px; max-height: 600px; align-self: center;justify-self: center;padding-top: 3rem;">
+        </canvas>
+      </div>
+
     </div>
 
     <script src="/budget-tracker/assets/js/script.js"></script>
+
+    <script>
+      const incomeCategories = <?= json_encode($categories); ?>;
+      const incomeAmounts = <?= json_encode($amounts); ?>;
+    </script>
+
+    <script>
+      const ctx = document.getElementById('incomeChart').getContext('2d');
+      const incomeChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: incomeCategories,
+          datasets: [{
+            label: 'Income by Category (<?= $currentPeriod ?>)',
+            data: incomeAmounts,
+            backgroundColor: [
+              '#F6B0D2',
+              '#AF1665',
+              '#522B29',
+              '#AFD5AA',
+              '#C26CC9'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              title: {
+                display: true,
+                text: 'Income Breakdown for <?= date("F Y", strtotime($currentPeriod)) ?>'
+              }
+            }
+          }
+        }
+      });
+    </script>
+
   </body>
 </html>

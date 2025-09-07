@@ -1,11 +1,10 @@
 /*---------- gen begins ----------*/
 
 *{
-  padding:0;
+  padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "poppins", sans-serif;
-  
 }
 
 :root{
@@ -359,14 +358,12 @@ body{
   padding: 20px;
 }
 
-
 .container{
   max-width: 600px;
   width: 90%;
   margin: 0 auto;
   background-color: var(--green);
   border-radius: 5px;
-  box-shadow: 5px 5px 10px #000;
   padding: 2rem auto;
   display: flex;
   justify-content: center;
@@ -663,32 +660,12 @@ section h1{
   border-radius: 5px;
   border-width: 2px;
   border-color: var(--dark);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   padding: 3rem 2rem;
   top:100px;
   position: absolute;
   justify-content:flex-start;
   text-align: center;
 }
-
-/*
-.income-error,
-.expense-error{
-  text-align: center;
-  color: var(--light);
-  background-color: var(--light-danger);
-  padding: 1rem 0;
-  width: 650px;
-  margin: 2rem auto;
-  border-radius: 5px;
-  display: none;
-}
-
-.income-error.error,
-.expense-error.error{
-  display: block;
-  transition: all 0.8s ease-in;
-} */
 
 .income-content,
 .expense-content{
@@ -713,7 +690,7 @@ section h1{
 .filter-month #filt-period{
   padding: 0.6rem 1rem;
   width: 300px;
-  border: none /*1px solid var(--dark-green)*/;
+  border: none;
   background-color: var(--green);
   font-family: inherit;
   font-size: 0.8rem;
@@ -824,11 +801,19 @@ section h1{
 
 /*=========Table Content Closes==========*/
 
-/*=========Filter Begins==========*/
+/*=========Chart Begins==========*/
 
+.in-chart{
+  margin-top: 20px;
+}
 
+.in-chart canvas{
+  max-width: 900px;
+  width: 100%;
+  padding:20px
+}
 
-/*=========Filter Ends==========*/
+/*=========Chart Ends==========*/
 
 /*---------- income/expense page ends ----------*/
 

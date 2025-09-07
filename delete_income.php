@@ -16,3 +16,5 @@ $stmt->execute([$id]);
 
 header('Location: income.php');
 exit();
+
+?>

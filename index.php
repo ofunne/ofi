@@ -275,7 +275,7 @@ else {
         <p>Click your balance to see more information.</p>
       </div>
       <div class="clicked-info">
-        <p>Click the income or spending icon to see more information.</p>
+        <p>Click the income or spending icon to see more information or to start tracking.</p>
       </div>
     <?php else: ?>
       <div class="not-logged-info">

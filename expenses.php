@@ -66,6 +66,34 @@ if (!isset($_SESSION['user_id'])) {
 
 ?>
 
+<?php
+
+$currentPeriod = $_GET['period'] ?? date('Y-m');
+
+$stmt = $pdo->prepare("
+  SELECT category, SUM(amount) as total
+  FROM `expense-tracker`
+  JOIN budgets ON `expense-tracker`.budget_id = budgets.id
+  WHERE `expense-tracker`.user_id = :user_id
+    AND budgets.period = :period
+  GROUP BY category
+");
+
+$stmt->execute([
+  'user_id' => $user_id,
+  'period' => $currentPeriod
+]);
+$expenseData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$categories = [];
+$amounts = [];
+foreach ($expenseData as $row) {
+    $categories[] = $row['category'];
+    $amounts[] = $row['total'];
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -80,6 +108,8 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="/budget-tracker/assets/css/styles.css">
 
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   </head>
 
@@ -262,8 +292,68 @@ if (!isset($_SESSION['user_id'])) {
           <?php endforeach; ?>
         </tbody>
       </table>
+
+      <div>
+        <canvas id="expenseChart" style="max-width: 600px; max-height: 600px; align-self: center;justify-self: center;padding-top: 3rem;">
+        </canvas>
+      </div>
     </div>
 
     <script src="/budget-tracker/assets/js/script.js"></script>
+
+    <script>
+      const expenseCategories = <?= json_encode($categories); ?>;
+      const expenseAmounts = <?= json_encode($amounts); ?>;
+    </script>
+
+    <script>
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      const expenseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: expenseCategories,
+          datasets: [{
+            label: 'Expenses by Category (<?= $currentPeriod ?>)',
+            data: expenseAmounts,
+            backgroundColor: [
+              '#F6B0D2',
+              '#AF1665',
+              '#522B29',
+              '#AFD5AA',
+              '#C26CC9',
+              '#D86B9A',
+              '#8B0A50',
+              '#C4476A',
+              '#E5678A',
+              '#7C3A8D',
+              '#6A4E93',
+              '#4B2E5D',
+              '#9E73C0',
+              '#7C3A2D',
+              '#5B3A29',
+              '#8B5E3C',
+              '#A9746E',
+              '#3E6B3D',
+              '#5F8D54',
+              '#7BAE7F',
+              '#4D7048'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              title: {
+                display: true,
+                text: 'Expense Breakdown for <?= date("F Y", strtotime($currentPeriod)) ?>'
+              }
+            }
+          }
+        }
+      });
+    </script>
+
   </body>
 </html>

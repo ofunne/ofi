@@ -16,3 +16,5 @@ $stmt->execute([$id]);
 
 header('Location: expenses.php');
 exit();
+
+?>
