@@ -298,7 +298,7 @@ foreach ($incomeData as $row) {
         data: {
           labels: incomeCategories,
           datasets: [{
-            label: 'Income by Category (<?= $currentPeriod ?>)',
+            label: '<?= $currentPeriod ?> Income',
             data: incomeAmounts,
             backgroundColor: [
               '#F6B0D2',
@@ -318,7 +318,13 @@ foreach ($incomeData as $row) {
                 display: true,
                 text: 'Income Breakdown for <?= date("F Y", strtotime($currentPeriod)) ?>'
               }
-            }
+            },
+            tooltip: {
+                callbacks: {
+                    label: (item) =>
+                        `${item.dataset.label}: £${item.formattedValue}`,
+                },
+            },
           }
         }
       });

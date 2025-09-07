@@ -313,7 +313,7 @@ foreach ($expenseData as $row) {
         data: {
           labels: expenseCategories,
           datasets: [{
-            label: 'Expenses by Category (<?= $currentPeriod ?>)',
+            label: '<?= $currentPeriod ?> Spending',
             data: expenseAmounts,
             backgroundColor: [
               '#F6B0D2',
@@ -347,9 +347,26 @@ foreach ($expenseData as $row) {
               position: 'bottom',
               title: {
                 display: true,
-                text: 'Expense Breakdown for <?= date("F Y", strtotime($currentPeriod)) ?>'
+                text: 'Expense Breakdown'
               }
-            }
+            },
+            tooltip: {
+                callbacks: {
+                    label: (item) =>
+                        `${item.dataset.label}: £${item.formattedValue}`,
+                },
+            },
+            /*tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let dataset = context.dataset;
+                  let total = dataset.data.reduce((a, b) => a + b, 0);
+                  let value = dataset.data[context.dataIndex];
+                  let percentage = ((value / total) * 100).toFixed(2) + "%";
+                  return context.label + ": " + percentage;
+                }
+              }
+            },*/
           }
         }
       });
